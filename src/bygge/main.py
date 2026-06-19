@@ -35,6 +35,7 @@ from bygge.util import (
     ExecutableInfo,
 )
 from bygge.util.cli import UNKNOWN_ARGS_CTX, NamedChoice
+from bygge.util.env import env_truthy
 from bygge.workspace import Workspace
 
 logger = logging.getLogger(__name__)
@@ -202,7 +203,9 @@ class ByggeGroup(Group):
     ),
     default="info",
 )
-@option("--do-not-delegate", is_flag=True, default=False)
+@option(
+    "--do-not-delegate", is_flag=True, default=env_truthy("BYGGE_DO_NOT_DELEGATE", default=False)
+)
 def main(
     ctx: Context, cwd: Path, workspace_dir: Path | None, level: int, do_not_delegate: bool
 ) -> None:  # pragma: no cover
