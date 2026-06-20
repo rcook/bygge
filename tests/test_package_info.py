@@ -46,17 +46,19 @@ def test_package_meta_load_missing_name(tmp_workspace: Path) -> None:
     assert meta is None
 
 
-def test_package_meta_load_missing_build_backend(
-    tmp_workspace: Path, caplog: pytest.LogCaptureFixture
-) -> None:
+def test_package_meta_load_missing_build_backend(tmp_workspace: Path) -> None:
     """Test PackageMeta.load returns None when build backend is missing."""
     pyproject_path = tmp_workspace / "invalid.toml"
     _ = pyproject_path.write_text("[project]\nname = 'test'\n")
 
     meta = PackageMeta.load(pyproject_path=pyproject_path, optional_deps=[])
 
-    assert meta is None
-    assert "does not specify build backend" in caplog.text
+    assert meta is not None
+    assert meta.name == "test"
+    assert meta.package_dir == tmp_workspace
+    assert meta.build_backend is None
+    assert len(meta.build_requires) == 0
+    assert len(meta.requirements) == 0
 
 
 def test_package_meta_load_invalid_toml(tmp_workspace: Path) -> None:

@@ -25,7 +25,7 @@ class PackageMeta:
     pyproject_path: Path
     package_dir: Path
     requirements: set[Requirement]
-    build_backend: str
+    build_backend: str | None
     build_requires: list[str]
 
     @classmethod
@@ -44,10 +44,6 @@ class PackageMeta:
         requirements = get_requirements(blob=blob, optional_deps=optional_deps)
 
         build_backend = try_str(query_toml(blob, "build-system.build-backend"))
-        if build_backend is None:
-            warning(f"Project file {pyproject_path} does not specify build backend")
-            return None
-
         build_requires = try_str_list(query_toml(blob, "build-system.requires")) or []
 
         return cls(

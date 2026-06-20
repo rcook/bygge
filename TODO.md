@@ -19,3 +19,11 @@
 ## TODO003: Reduce number of warnings in output
 
 ## TODO004: Include `vulture` to detect dead code and unused return values
+
+## TODO005: `init` should indicate which Python it's using
+
+## TODO007: Command to create symlinks or `.wav` wrappers for all scripts
+
+# Done
+
+## ~~TODO006: Simple project (e.g. `wav-tool`) `init does not do pip install?~~
