@@ -22,6 +22,8 @@
 
 ## TODO007: Command to create symlinks or `.wav` wrappers for all scripts
 
+## TODO008: Command to create `pre-commit` hooks file
+
 ## Done
 
 ## ~~TODO005: `init` should indicate which Python it's using~~ (no repro)
