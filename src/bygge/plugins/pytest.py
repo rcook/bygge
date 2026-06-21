@@ -5,12 +5,12 @@ from bygge.util import TomlValue
 from bygge.workspace import Workspace
 
 from .pytest_run_mixin import PytestRunMixin
-from .util import fetch_pytest_test_dirs
+from .util import check_requirements
 
 
 class Pytest(PytestRunMixin):
     def is_installed(self, input: Input, blob: TomlValue) -> bool:
-        return fetch_pytest_test_dirs(input=input, blob=blob, required_deps=["pytest"]) is not None
+        return check_requirements(input=input, blob=blob, required_deps=["pytest"])
 
     def run_test(
         self,

@@ -6,15 +6,12 @@ from bygge.workspace import Workspace
 
 from .pytest_run_mixin import PytestRunMixin
 from .test_dirs_mixin import TestDirsMixin
-from .util import fetch_pytest_test_dirs
+from .util import check_requirements
 
 
 class PytestCov(TestDirsMixin, PytestRunMixin):
     def is_installed(self, input: Input, blob: TomlValue) -> bool:
-        return (
-            fetch_pytest_test_dirs(input=input, blob=blob, required_deps=["pytest", "pytest-cov"])
-            is not None
-        )
+        return check_requirements(input=input, blob=blob, required_deps=["pytest", "pytest-cov"])
 
     def run_coverage(
         self,

@@ -10,4 +10,4 @@ from .util import fetch_pytest_test_dirs
 
 class PytestDiscovery:
     def fetch_test_dirs(self, input: Input, blob: TomlValue) -> list[Path] | None:
-        return fetch_pytest_test_dirs(input=input, blob=blob, required_deps=["pytest"])
+        return fetch_pytest_test_dirs(input=input, blob=blob)

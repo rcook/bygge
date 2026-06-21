@@ -20,14 +20,12 @@ def get_requirements(input: Input, blob: TomlValue) -> set[Requirement]:
     return requirements
 
 
-def fetch_pytest_test_dirs(
-    input: Input, blob: TomlValue, required_deps: list[str]
-) -> list[Path] | None:
+def check_requirements(input: Input, blob: TomlValue, required_deps: list[str]) -> bool:
     requirements = get_requirements(input=input, blob=blob)
-    for d in required_deps:
-        if not any(map(lambda req: req.name == d, requirements)):
-            return None
+    return all(any(map(lambda req: req.name == d, requirements)) for d in required_deps)
 
+
+def fetch_pytest_test_dirs(input: Input, blob: TomlValue) -> list[Path] | None:
     node = try_str_list(query_toml(blob, "tool.pytest.ini_options.testpaths"))
     if node is None:
         return None

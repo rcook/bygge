@@ -8,7 +8,7 @@ import pytest
 
 from bygge.contracts import Input, PluginResult
 from bygge.plugins.pytest_run_mixin import PytestRunMixin
-from bygge.plugins.util import fetch_pytest_test_dirs, get_requirements
+from bygge.plugins.util import check_requirements, fetch_pytest_test_dirs, get_requirements
 from bygge.util import load_toml
 
 
@@ -42,22 +42,20 @@ def test_fetch_pytest_test_dirs_success(tmp_package: Path) -> None:
     input = Input(pyproject_path=pyproject_path, optional_deps=["dev"])
     blob = load_toml(pyproject_path)
 
-    test_dirs = fetch_pytest_test_dirs(input=input, blob=blob, required_deps=["pytest"])
+    test_dirs = fetch_pytest_test_dirs(input=input, blob=blob)
 
     assert test_dirs is not None
     assert len(test_dirs) == 1
     assert test_dirs[0].name == "tests"
 
 
-def test_fetch_pytest_test_dirs_missing_required_dep(tmp_package: Path) -> None:
+def test_check_requirements_missing_required_dep(tmp_package: Path) -> None:
     """Test fetch_pytest_test_dirs returns None when required dep is missing."""
     pyproject_path = tmp_package / "pyproject.toml"
     input = Input(pyproject_path=pyproject_path, optional_deps=[])
     blob = load_toml(pyproject_path)
 
-    test_dirs = fetch_pytest_test_dirs(input=input, blob=blob, required_deps=["pytest"])
-
-    assert test_dirs is None
+    assert not check_requirements(input=input, blob=blob, required_deps=["pytest"])
 
 
 def test_fetch_pytest_test_dirs_no_testpaths(tmp_workspace: Path) -> None:
@@ -78,7 +76,7 @@ def test_fetch_pytest_test_dirs_no_testpaths(tmp_workspace: Path) -> None:
     input = Input(pyproject_path=pyproject_path, optional_deps=["dev"])
     blob = load_toml(pyproject_path)
 
-    test_dirs = fetch_pytest_test_dirs(input=input, blob=blob, required_deps=["pytest"])
+    test_dirs = fetch_pytest_test_dirs(input=input, blob=blob)
 
     assert test_dirs is None
 
