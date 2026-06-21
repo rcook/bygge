@@ -87,7 +87,7 @@ pytest                        # Test
 
 ## Project Structure
 
-```
+```text
 bygge/
 ├── src/bygge/            # Main package source
 │   ├── cmd/              # CLI command implementations
@@ -119,6 +119,7 @@ bump-my-version bump major
 ```
 
 Each command:
+
 - Updates `version` in `pyproject.toml`
 - Updates `VERSION` in `src/bygge/__init__.py`
 - Creates a git commit: "Bump version: X.Y.Z -> X.Y.Z+1"
@@ -133,6 +134,7 @@ git push --follow-tags
 ```
 
 This triggers the GitHub Actions publish workflow which:
+
 1. Runs all checks (format, lint, typecheck, test)
 2. Builds the package
 3. Publishes to PyPI via trusted publisher
@@ -245,6 +247,7 @@ bygge commit-unchecked -m "Your message"
 ### Type checker complains about missing types
 
 The project requires strict typing. Options:
+
 1. Add proper type hints
 2. Use `# type: ignore[specific-error]` with a comment explaining why
 3. Check if the issue is in dependencies (may need `reportPrivateImportUsage = false` for specific modules)

@@ -115,13 +115,14 @@ coverage_baseline = 95
 `bygge` automatically detects and uses tools from your project dependencies:
 
 | Tool | Purpose | Detected from |
-|------|---------|---------------|
+| ---- | ------- | ------------- |
 | **pytest** | Unit testing | `pytest` in dependencies |
 | **pytest-cov** | Coverage reporting | `pytest-cov` in dependencies |
 | **basedpyright** | Type checking | `basedpyright` in dependencies |
 | **ruff** | Linting & formatting | Built-in (no detection needed) |
 
 Configuration is read from your `pyproject.toml`:
+
 - Pytest: `[tool.pytest.ini_options]`
 - Basedpyright: `[tool.basedpyright]`
 - Ruff: `[tool.ruff]`
@@ -137,7 +138,7 @@ For projects with multiple packages, `bygge` handles:
 
 Example monorepo structure:
 
-```
+```text
 myproject/
 ├── .bygge.toml
 ├── pyproject.toml
@@ -173,6 +174,6 @@ myproject/
 
 See [DEV.md](DEV.md) for development setup and guidelines.
 
-## License
+## Licence
 
 MIT License - see [LICENSE](LICENSE) for details.
