@@ -28,7 +28,7 @@ class RuffFormatPlugin(RuffRunMixin):
     def _run_format_inner(
         self,
         workspace: Workspace,
-        payload: Payload,  # pyright: ignore[reportUnusedParameter]
+        payload: Payload,
         fix: bool,
         args: tuple[str, ...],
     ) -> PluginResult:
@@ -37,7 +37,8 @@ class RuffFormatPlugin(RuffRunMixin):
                 str(workspace.make_bin_path("ruff")),
                 "format",
                 *([] if fix else ["--check"]),
-                str(workspace.package_root_dir),
+                *[str(p) for p in payload.source_dirs],
+                *[str(p) for p in payload.test_dirs],
                 *args,
             ],
             cwd=workspace.cwd,
@@ -46,7 +47,7 @@ class RuffFormatPlugin(RuffRunMixin):
     def _run_isort_inner(
         self,
         workspace: Workspace,
-        payload: Payload,  # pyright: ignore[reportUnusedParameter]
+        payload: Payload,
         fix: bool,
         args: tuple[str, ...],
     ) -> PluginResult:
@@ -57,7 +58,8 @@ class RuffFormatPlugin(RuffRunMixin):
                 "--select",
                 "I",
                 *(["--fix"] if fix else []),
-                str(workspace.package_root_dir),
+                *[str(p) for p in payload.source_dirs],
+                *[str(p) for p in payload.test_dirs],
                 *args,
             ],
             cwd=workspace.cwd,

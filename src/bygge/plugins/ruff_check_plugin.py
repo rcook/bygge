@@ -14,7 +14,7 @@ class RuffCheckPlugin(RuffRunMixin):
     def run_lint(
         self,
         workspace: Workspace,
-        payload: Payload,  # pyright: ignore[reportUnusedParameter]
+        payload: Payload,
         fix: bool,
         args: tuple[str, ...],
     ) -> PluginResult:
@@ -23,7 +23,8 @@ class RuffCheckPlugin(RuffRunMixin):
                 str(workspace.make_bin_path("ruff")),
                 "check",
                 *(["--fix"] if fix else []),
-                str(workspace.package_root_dir),
+                *[str(p) for p in payload.source_dirs],
+                *[str(p) for p in payload.test_dirs],
                 *args,
             ],
             cwd=workspace.cwd,

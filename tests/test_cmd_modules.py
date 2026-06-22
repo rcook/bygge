@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 from subprocess import CompletedProcess
+from typing import cast
 from unittest.mock import MagicMock
 
 from pytest import CaptureFixture, raises
@@ -67,6 +68,44 @@ def test_fmt_isort_failure(tmp_workspace: Workspace, mock_subprocess: MagicMock)
 
     with raises(ByggeError, match="No format plugin found"):
         fmt(workspace=tmp_workspace, fix=False, args=())
+
+
+def test_fmt_uses_payload_dirs(
+    tmp_workspace: Workspace,
+    tmp_package: Path,
+    mock_subprocess: MagicMock,
+) -> None:
+    """Test that fmt command passes payload source_dirs and test_dirs to ruff."""
+    mock_subprocess.return_value = CompletedProcess(args=[], returncode=0, stdout="", stderr="")
+
+    fmt(workspace=tmp_workspace, fix=True, args=())
+
+    assert mock_subprocess.call_count == 2
+    # Check the format call includes source and test dirs from payload
+    first_call = mock_subprocess.call_args_list[0]
+    cmd = cast(list[str], first_call[0][0])
+    assert "format" in cmd
+    # Should include the tmp_package src directory
+    assert any(str(tmp_package / "src") in arg for arg in cmd if isinstance(arg, str))
+
+
+def test_lint_uses_payload_dirs(
+    tmp_workspace: Workspace,
+    tmp_package: Path,
+    mock_subprocess: MagicMock,
+) -> None:
+    """Test that lint command passes payload source_dirs and test_dirs to ruff."""
+    mock_subprocess.return_value = CompletedProcess(args=[], returncode=0, stdout="", stderr="")
+
+    lint(workspace=tmp_workspace, fix=False, args=())
+
+    assert mock_subprocess.call_count >= 1
+    # Check the check call includes source and test dirs from payload
+    first_call = mock_subprocess.call_args_list[0]
+    cmd = cast(list[str], first_call[0][0])
+    assert "check" in cmd
+    # Should include the tmp_package src directory
+    assert any(str(tmp_package / "src") in arg for arg in cmd if isinstance(arg, str))
 
 
 def test_lint_no_fix(
