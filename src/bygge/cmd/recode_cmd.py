@@ -5,6 +5,7 @@ from pathlib import Path
 
 import libcst
 
+from bygge import ByggeError
 from bygge.util import RewriteNonAsciiStrings, walk_dir
 from bygge.workspace import Workspace
 
@@ -26,7 +27,7 @@ def recode(workspace: Workspace, fix: bool) -> None:
             count += 1
             p = dir / f
             if p.suffix == DEFAULT_EXT and _transform_file(
-                transformer=transformer, path=p, fix=fix
+                workspace=workspace, transformer=transformer, path=p, fix=fix
             ):
                 fixed_count += 1
 
@@ -34,16 +35,21 @@ def recode(workspace: Workspace, fix: bool) -> None:
 
     if fix:
         info(f"Fixed non-ASCII characters in {fixed_count} files")
+    elif fixed_count > 0:
+        raise ByggeError(f"Detected non-ASCII characters in {fixed_count} files")
     else:
-        info(f"Detected non-ASCII characters in {fixed_count} files")
+        info("No non-ASCII characters detected")
 
 
-def _transform_file(transformer: RewriteNonAsciiStrings, path: Path, fix: bool) -> bool:
+def _transform_file(
+    workspace: Workspace, transformer: RewriteNonAsciiStrings, path: Path, fix: bool
+) -> bool:
+    rel_path = path.relative_to(workspace.workspace_dir).as_posix()
     s = path.read_text(encoding="utf-8")
     try:
         module = libcst.parse_module(s)
     except Exception as e:  # pragma: nocover
-        warning(f"Could not parse {path} ({e})")
+        warning(f"Could not parse {rel_path} ({e})")
         return False
 
     new_module = module.visit(transformer)
@@ -51,9 +57,9 @@ def _transform_file(transformer: RewriteNonAsciiStrings, path: Path, fix: bool) 
     if output != s:
         if fix:
             _ = path.write_text(output, encoding="utf-8")
-            info(f"fixed non-ASCII characters in {path}")
+            info(f"Fixed non-ASCII characters in {rel_path}")
         else:  # pragma: nocover
-            info(f"found non-ASCII characters in {path}")
+            info(f"Found non-ASCII characters in {rel_path}")
         return True
     else:
         return False
