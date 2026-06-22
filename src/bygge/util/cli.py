@@ -12,11 +12,16 @@ from .unset import UNSET, Unset
 type ClickDecorator = Callable[[Command | Callable[..., object]], Command | Callable[..., object]]
 
 
+def _get_cwd(ctx: Context, param: Parameter, value: Path | None) -> Path:  # pyright: ignore[reportUnusedParameter]
+    return Path.cwd() if value is None else value
+
+
 CWD_OPT: ClickDecorator = option(
     "-C",
     "cwd",
     type=click.Path(exists=True, file_okay=False, dir_okay=True, resolve_path=True, path_type=Path),
-    default=Path.cwd(),
+    default=None,
+    callback=_get_cwd,
     help="Working directory",
 )
 
