@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import Any, override
 
 import click
-from click import Context, Group, option, pass_context, pass_obj, version_option
+from click import Context, Group, argument, option, pass_context, pass_obj, version_option
 
 from bygge import VERSION, ByggeError
 from bygge.cmd import (
@@ -16,7 +16,7 @@ from bygge.cmd import (
     commit_unchecked,
     coverage,
     fmt,
-    hooks,
+    hook,
     info,
     init,
     lint,
@@ -323,10 +323,24 @@ def type_check_cmd(workspace: Workspace, args: tuple[str, ...]) -> None:  # prag
     type_check(workspace=workspace, args=args)
 
 
-@main.command("hooks", help="Install Git pre-commit hook")
+@main.command("hook", help="Install Git pre-commit hook")
 @pass_obj
-def hooks_cmd(workspace: Workspace) -> None:  # pragma: no cover
-    hooks(workspace=workspace)
+@argument(
+    "dir",
+    type=click.Path(
+        file_okay=False,
+        dir_okay=True,
+        writable=True,
+        resolve_path=True,
+        path_type=Path,
+    ),
+    required=False,
+)
+@option("--create-pre-commit", is_flag=True, default=False)
+def hook_cmd(
+    workspace: Workspace, dir: Path | None, create_pre_commit: bool
+) -> None:  # pragma: no cover
+    hook(workspace=workspace, dir=dir, create_pre_commit=create_pre_commit)
 
 
 @main.command("unhook", help="Uninstall Git pre-commit hook")

@@ -4,7 +4,7 @@ from .check_cmd import check
 from .commit_unchecked_cmd import commit_unchecked
 from .coverage_cmd import coverage
 from .fmt_cmd import fmt
-from .hooks_cmd import hooks
+from .hook_cmd import hook
 from .info_cmd import info
 from .init_cmd import init
 from .lint_cmd import lint
@@ -20,7 +20,7 @@ __all__ = [
     "commit_unchecked",
     "coverage",
     "fmt",
-    "hooks",
+    "hook",
     "info",
     "init",
     "lint",

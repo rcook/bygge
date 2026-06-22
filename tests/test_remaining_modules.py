@@ -5,33 +5,58 @@ from subprocess import CompletedProcess
 from unittest.mock import MagicMock
 
 import pytest
+from pytest import CaptureFixture, raises
 
+from bygge import ByggeError
 from bygge.cmd.commit_unchecked_cmd import commit_unchecked
-from bygge.cmd.hooks_cmd import hooks
+from bygge.cmd.hook_cmd import hook
 from bygge.cmd.init_cmd import init
 from bygge.cmd.unhook_cmd import unhook
 from bygge.workspace import Workspace
 
 
-def test_hooks_configures_git(
-    tmp_workspace: Path, mock_subprocess: MagicMock, capsys: pytest.CaptureFixture[str]
+def test_hook_configures_git_and_creates_pre_commit_hook(
+    tmp_workspace: Path, mock_subprocess: MagicMock, capsys: CaptureFixture[str]
 ) -> None:
     """Test hooks command configures git hooks path."""
     workspace = Workspace.find(cwd=tmp_workspace, workspace_dir=None)
     mock_subprocess.return_value = CompletedProcess(args=[], returncode=0, stdout="", stderr="")
 
-    hooks(workspace=workspace)
+    pre_commit_path = tmp_workspace / "hooks" / "pre-commit"
+    assert not pre_commit_path.exists()
+
+    pre_commit_path.parent.mkdir(parents=True)
+    _ = pre_commit_path.write_text("content")
+
+    with raises(ByggeError, match=r"^Pre-commit hook file .+ already exists$"):
+        hook(workspace=workspace, dir=None, create_pre_commit=True)
+
+    assert pre_commit_path.read_text() == "content"
+    pre_commit_path.unlink()
+
+    hook(workspace=workspace, dir=None, create_pre_commit=True)
+    assert pre_commit_path.is_file() and pre_commit_path.read_text() != "content"
 
     captured = capsys.readouterr()
     assert "Git hooks installed" in captured.out
-    mock_subprocess.assert_called_once()
+    assert mock_subprocess.call_count == 3
+
     call_args = mock_subprocess.call_args_list[0]
     assert "git" in call_args[0][0]
     assert "core.hooksPath" in call_args[0][0]
 
+    call_args = mock_subprocess.call_args_list[1]
+    assert "git" in call_args[0][0]
+    assert "core.hooksPath" in call_args[0][0]
+
+    call_args = mock_subprocess.call_args_list[2]
+    assert "git" in call_args[0][0]
+    assert "add" in call_args[0][0]
+    assert "--chmod=+x" in call_args[0][0]
+
 
 def test_unhook_unsets_git_config(
-    tmp_workspace: Path, mock_subprocess: MagicMock, capsys: pytest.CaptureFixture[str]
+    tmp_workspace: Path, mock_subprocess: MagicMock, capsys: CaptureFixture[str]
 ) -> None:
     """Test unhook command unsets git hooks path."""
     workspace = Workspace.find(cwd=tmp_workspace, workspace_dir=None)

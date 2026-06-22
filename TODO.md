@@ -8,24 +8,24 @@
 
 ## TODO007: Command to create symlinks or `.cmd` wrappers for all scripts
 
-## TODO008: Command to create `pre-commit` hooks file
-
 ## Done
 
-## ~~TODO000: Generalization~~ (fixed)
+### ~~TODO000: Generalization~~ (fixed)
 
 - `fmt_cmd.py`: Hardcodes ruff as the linting tool
 - `lint_cmd.py`: Hardcodes ruff as the linting tool
 
-## ~~TODO001: Recode~~ (fixed)
+### ~~TODO001: Recode~~ (fixed)
 
 - Introduce `--fix/--check`
 - What should the default be?
 - What should return codes be?
 - Add to `check`
 
-## ~~TODO003: Reduce number of warnings in output~~ (fixed)
+### ~~TODO003: Reduce number of warnings in output~~ (fixed)
 
-## ~~TODO005: `init` should indicate which Python it's using~~ (no repro)
+### ~~TODO005: `init` should indicate which Python it's using~~ (no repro)
 
 ### ~~TODO006: Simple project (e.g. `wav-tool`) `init does not do pip install?~~ (fixed)
+
+### ~~TODO008: Command to create `pre-commit` hooks file~~ (fixed)

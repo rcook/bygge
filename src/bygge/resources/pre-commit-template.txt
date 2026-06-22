@@ -1,0 +1,29 @@
+#!/bin/bash
+set -euo pipefail
+
+this_dir=$$(cd "$$(dirname "$$0")"; pwd -P)
+root_dir=$$(dirname "$$this_dir")
+venv_dir=$$root_dir/${VENV_DIR}
+
+# Skip checks if only documentation files are staged
+docs_only=true
+while IFS= read -r file; do
+  case "$$file" in
+    *.md|LICENSE|.gitignore)
+      ;;
+    *)
+      docs_only=false
+      break
+      ;;
+  esac
+done < <(git diff --cached --name-only --diff-filter=ACMR)
+
+if [ "$$docs_only" = true ]; then
+  exit 0
+fi
+
+if [[ "$$OSTYPE" == "msys" || "$$OSTYPE" == "cygwin" ]]; then
+  "$$venv_dir/Scripts/bygge.exe" check
+else
+  exec "$$venv_dir/bin/bygge" check
+fi

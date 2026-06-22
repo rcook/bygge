@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import os
 import shlex
+import stat
 from collections.abc import Generator, Iterable
 from fnmatch import fnmatch
 from logging import warning
@@ -88,3 +89,9 @@ def shell_join(cmd: list[str]) -> str:  # pragma: nocover
         return mslex.join(split_command=cmd)
     else:
         return shlex.join(split_command=cmd)
+
+
+def chmod_plus_x(path: Path) -> None:
+    st = path.stat()
+    mode = st.st_mode | stat.S_IEXEC
+    path.chmod(mode)
