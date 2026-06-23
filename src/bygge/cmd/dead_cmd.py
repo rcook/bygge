@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from bygge import ByggeError
-from bygge.cmd.constants import PLUGINS
+from bygge.cmd.plugin_registry import PLUGINS
 from bygge.cmd.plugin_runner import PluginRunner
 from bygge.workspace import Workspace
 

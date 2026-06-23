@@ -5,7 +5,7 @@ from pathlib import Path
 
 import click
 
-from bygge.cmd.constants import PLUGINS
+from bygge.cmd.plugin_registry import PLUGINS
 from bygge.cmd.plugin_runner import PluginRunner
 from bygge.util import ExecutableInfo
 from bygge.workspace import Workspace

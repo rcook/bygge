@@ -3,7 +3,7 @@ from __future__ import annotations
 from bygge import ByggeError
 from bygge.workspace import Workspace
 
-from .constants import PLUGINS
+from .plugin_registry import PLUGINS
 from .plugin_runner import PluginRunner
 
 
