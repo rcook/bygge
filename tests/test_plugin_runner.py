@@ -9,7 +9,7 @@ from bygge.cmd.plugin_runner import PluginRunner
 from bygge.cmd.run_result import RunResult
 from bygge.contracts import CoveragePlugin, Payload, PluginResult, TypeCheckPlugin
 from bygge.contracts import TestPlugin as _TestPlugin
-from bygge.plugins import Plugins, RuffFormatPlugin
+from bygge.plugins import Plugins, RuffFormat
 from bygge.workspace import Workspace
 
 
@@ -32,7 +32,7 @@ def mock_plugins() -> Plugins:
         test_plugins=[Pytest()],
         coverage_plugins=[PytestCov()],
         type_check_plugins=[Basedpyright()],
-        format_plugins=[RuffFormatPlugin()],
+        format_plugins=[RuffFormat()],
     )
 
 

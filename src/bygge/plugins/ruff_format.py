@@ -7,7 +7,7 @@ from bygge.util import TomlValue
 from bygge.workspace import Workspace
 
 
-class RuffFormatPlugin(RuffRunMixin):
+class RuffFormat(RuffRunMixin):
     def is_installed(self, input: Input, blob: TomlValue) -> bool:
         return check_requirements(input=input, blob=blob, required_deps=["ruff"])
 

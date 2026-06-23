@@ -17,8 +17,8 @@ from bygge.plugins import (
     Pytest,
     PytestCov,
     PytestDiscovery,
-    RuffCheckPlugin,
-    RuffFormatPlugin,
+    RuffCheck,
+    RuffFormat,
     Setuptools,
 )
 from bygge.util import load_toml
@@ -81,8 +81,8 @@ def test_package_info_make(tmp_package: Path) -> None:
         test_plugins=[Pytest()],
         coverage_plugins=[PytestCov()],
         type_check_plugins=[Basedpyright()],
-        format_plugins=[RuffFormatPlugin()],
-        lint_plugins=[RuffCheckPlugin()],
+        format_plugins=[RuffFormat()],
+        lint_plugins=[RuffCheck()],
     )
     pyproject_path = tmp_package / "pyproject.toml"
     input = Input(
@@ -113,8 +113,8 @@ def test_package_info_make_missing_name(tmp_workspace_dir: Path) -> None:
         test_plugins=[Pytest()],
         coverage_plugins=[PytestCov()],
         type_check_plugins=[Basedpyright()],
-        format_plugins=[RuffFormatPlugin()],
-        lint_plugins=[RuffCheckPlugin()],
+        format_plugins=[RuffFormat()],
+        lint_plugins=[RuffCheck()],
     )
     pyproject_path = tmp_workspace_dir / "invalid.toml"
     _ = pyproject_path.write_text("[project]\nversion = '0.1.0'\n")
@@ -133,8 +133,8 @@ def test_package_info_get_name(tmp_package: Path) -> None:
         test_plugins=[Pytest()],
         coverage_plugins=[PytestCov()],
         type_check_plugins=[Basedpyright()],
-        format_plugins=[RuffFormatPlugin()],
-        lint_plugins=[RuffCheckPlugin()],
+        format_plugins=[RuffFormat()],
+        lint_plugins=[RuffCheck()],
     )
     pyproject_path = tmp_package / "pyproject.toml"
     blob = load_toml(pyproject_path)
@@ -159,8 +159,8 @@ def test_package_info_get_source_dirs(tmp_package: Path) -> None:
         test_plugins=[Pytest()],
         coverage_plugins=[PytestCov()],
         type_check_plugins=[Basedpyright()],
-        format_plugins=[RuffFormatPlugin()],
-        lint_plugins=[RuffCheckPlugin()],
+        format_plugins=[RuffFormat()],
+        lint_plugins=[RuffCheck()],
     )
     pyproject_path = tmp_package / "pyproject.toml"
     blob = load_toml(pyproject_path)
@@ -186,8 +186,8 @@ def test_package_info_get_test_dirs(tmp_package: Path) -> None:
         test_plugins=[Pytest()],
         coverage_plugins=[PytestCov()],
         type_check_plugins=[Basedpyright()],
-        format_plugins=[RuffFormatPlugin()],
-        lint_plugins=[RuffCheckPlugin()],
+        format_plugins=[RuffFormat()],
+        lint_plugins=[RuffCheck()],
     )
     pyproject_path = tmp_package / "pyproject.toml"
     blob = load_toml(pyproject_path)

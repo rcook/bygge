@@ -9,8 +9,8 @@ from bygge.plugins import (
     Pytest,
     PytestCov,
     PytestDiscovery,
-    RuffCheckPlugin,
-    RuffFormatPlugin,
+    RuffCheck,
+    RuffFormat,
     Setuptools,
     Vulture,
 )
@@ -21,7 +21,7 @@ PLUGINS: Plugins = Plugins(
     test_plugins=[Pytest()],
     coverage_plugins=[PytestCov()],
     type_check_plugins=[Basedpyright()],
-    format_plugins=[RuffFormatPlugin()],
-    lint_plugins=[RuffCheckPlugin()],
+    format_plugins=[RuffFormat()],
+    lint_plugins=[RuffCheck()],
     dead_code_plugins=[Vulture()],
 )

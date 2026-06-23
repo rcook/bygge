@@ -13,7 +13,7 @@ from bygge.plugins import (
     Pytest,
     PytestCov,
     PytestDiscovery,
-    RuffFormatPlugin,
+    RuffFormat,
     Setuptools,
 )
 from bygge.util import load_toml
@@ -27,7 +27,7 @@ def test_plugin_info_find_returns_first_installed(tmp_package: Path) -> None:
         test_plugins=[Pytest()],
         coverage_plugins=[PytestCov()],
         type_check_plugins=[Basedpyright()],
-        format_plugins=[RuffFormatPlugin()],
+        format_plugins=[RuffFormat()],
     )
     pyproject_path = tmp_package / "pyproject.toml"
     input = Input(
@@ -57,7 +57,7 @@ def test_plugin_info_find_returns_none_when_no_plugin_installed(tmp_workspace_di
         test_plugins=[Pytest()],
         coverage_plugins=[PytestCov()],
         type_check_plugins=[Basedpyright()],
-        format_plugins=[RuffFormatPlugin()],
+        format_plugins=[RuffFormat()],
     )
     input = Input(pyproject_path=pyproject_path, optional_deps=[], blob=load_toml(pyproject_path))
     blob = load_toml(pyproject_path)

@@ -13,8 +13,8 @@ from bygge.plugins.magic_sources import MagicSources
 from bygge.plugins.pytest import Pytest
 from bygge.plugins.pytest_cov import PytestCov
 from bygge.plugins.pytest_discovery import PytestDiscovery
-from bygge.plugins.ruff_check_plugin import RuffCheckPlugin
-from bygge.plugins.ruff_format_plugin import RuffFormatPlugin
+from bygge.plugins.ruff_check import RuffCheck
+from bygge.plugins.ruff_format import RuffFormat
 from bygge.plugins.setuptools import Setuptools
 from bygge.util import load_toml
 
@@ -27,8 +27,8 @@ def test_package_info_make_does_not_reread_toml(tmp_package: Path) -> None:
         test_plugins=[Pytest()],
         coverage_plugins=[PytestCov()],
         type_check_plugins=[Basedpyright()],
-        format_plugins=[RuffFormatPlugin()],
-        lint_plugins=[RuffCheckPlugin()],
+        format_plugins=[RuffFormat()],
+        lint_plugins=[RuffCheck()],
     )
 
     pyproject_path = tmp_package / "pyproject.toml"
