@@ -292,5 +292,5 @@ def test_init_python_version_unreadable(
 
     monkeypatch.setattr(Path, "read_text", mock_read_text)
 
-    with raises(ByggeError, match=r"Cannot read .*/\.python-version: Permission denied"):
+    with raises(ByggeError, match=r"Cannot read .*[/\\]\.python-version: Permission denied"):
         init(workspace=workspace, reinit=False, install=False, yes=True)
